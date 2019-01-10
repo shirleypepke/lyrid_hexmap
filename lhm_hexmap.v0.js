@@ -41,19 +41,19 @@ function lhm_loadDataset(csvdat) {
         height = numrows * hexRadius * 1.5 + 20;
         width = numcols * hexRadius * 2 + 20;
     }
-    
-    
+   
     data_queue.push(dataset);
-    var hmap = lhm_genMap();
-    hexmaps.push(hmap);
+    
     // call reusable hexmap function for the data and set properties appropriately
-    hmap.marginLeft((data_queue.length-1)*refsize).title(filelist[filelist.length-1].substring(0,filelist[filelist.length-1].length-4));
+    var hmap = lhm_genMap().marginLeft((data_queue.length-1)*refsize).title(filelist[filelist.length-1].substring(0,filelist[filelist.length-1].length-4));
     if (data_queue.length > 1) { hmap.marginTop(-30); }
     d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height)
     .append("g")
     .attr("transform","translate(20,20)").datum(dataset).call(hmap);
+    
+    hexmaps.push(hmap);
     
 }
 
