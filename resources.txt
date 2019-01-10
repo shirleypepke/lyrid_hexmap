@@ -1,0 +1,11 @@
+
+	•	 https://d3js.org -- The D3 project site
+	•	 https://d3indepth.com -- A site with great textual explanations
+	•	 https://stackoverflow.com  -- Every question is answered here!
+	•	 https://bl.ocks.org/syntagmatic/raw/3299303/ -- file upload incorporating d3
+	•	 https://bl.ocks.org/NGuernse/f36b4cc1b9d6860560df9245ab3c2b2b -- Example of D3 Hexbin with Slider
+	•	 https://medium.freecodecamp.org/a-gentle-introduction-to-d3-how-to-build-a-reusable-bubble-chart-9106dc4f6c46
+	•	 https://bl.ocks.org/mbostock/4063663 -- Scatterplot Matrix Brushing
+	•	 https://bl.ocks.org/Caged/6476579 -- Using d3-tip to add tooltips to a d3 bar chart
+	•	 https://visualcinnamon.com -- Datascience blogger with d3 visualization pointers
+
