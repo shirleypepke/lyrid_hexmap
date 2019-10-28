@@ -93,7 +93,7 @@ function lhm_genMap() {
         // simulated tooltip in maps not under mouse location
         var specialTip = d3.tip()
         .attr('class', 'd3-tip')
-        .html(function(d) { return "<span style='font-size:10px;color:cyan'> Row:"+d.nrow+", Col:"+d.ncol+", <br>Value:"+d.intensity+"</span>"})
+        .html(function(d) { return "<span style='font-size:10px;color:cyan'> Row:"+d.nrow+", Col:"+d.ncol+", <br>Value:"+(+d.intensity).toFixed(2)+"</span>"})
         
         // attach tooltip event listeners to svg
         svg.call(coordTip);
@@ -204,21 +204,25 @@ function lhm_genMap() {
 // handle upload button
 function lhm_uploadButton(el, callback) {
     var uploader = document.getElementById(el);
-    var reader = new FileReader();
-    
-    reader.onload = function(e) {
-        var contents = e.target.result;
-        d3.selectAll("#lotext").remove();
-        callback(contents);
-    };
     
     uploader.addEventListener("change", handleFiles, false);
     
-    function handleFiles() {
+    function handleFiles(event) {
         d3.select("#table").text("loading...").attr("id","lotext");
-        var file = this.files[0];
-        filelist.push(this.files[0].name);
-        reader.readAsText(file);
+        var files = event.target.files;
+        
+        for (var i = 0; i < files.length; i++) {
+            var reader = new FileReader();
+        
+            reader.onload = function(e) {
+                var contents = e.target.result;
+                d3.selectAll("#lotext").remove();
+                callback(contents);
+            };
+
+            filelist.push(files[i].name);
+            reader.readAsText(files[i]);
+        };
     };
 };
 
