@@ -15,7 +15,7 @@ data = infile.read().split()
 data = [float(i) for i in data]
 umax = max(data)
 infile.close()
-infile = file("ppmi.umx")
+infile = open("ppmi.umx")
 infile.readline()
 
 rowind = 0
