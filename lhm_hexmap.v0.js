@@ -20,7 +20,7 @@ var numcols, numrows;
 var hexRadius = 3;
 
 // load dataset and create hexmap
-function lhm_loadDataset(csvdat) {
+function lhm_loadDataset(csvdat, f) {
     var dataset = d3.csvParse(csvdat);
     
     // validate that new map has same dimensions as those already placed. This is necessary for cross-referencing
@@ -45,7 +45,7 @@ function lhm_loadDataset(csvdat) {
     data_queue.push(dataset);
     
     // call reusable hexmap function for the data and set properties appropriately
-    var hmap = lhm_genMap().marginLeft((data_queue.length-1)*refsize).title(filelist[filelist.length-1].substring(0,filelist[filelist.length-1].length-4));
+    var hmap = lhm_genMap().marginLeft((data_queue.length-1)*refsize).title(f.substring(0,f.length-4));
     if (data_queue.length > 1) { hmap.marginTop(-30); }
     d3.select("#chart").append("svg")
     .attr("width", width)
@@ -214,11 +214,13 @@ function lhm_uploadButton(el, callback) {
         for (var i = 0; i < files.length; i++) {
             var reader = new FileReader();
         
-            reader.onload = function(e) {
-                var contents = e.target.result;
-                d3.selectAll("#lotext").remove();
-                callback(contents);
-            };
+            reader.onload = (function(f) {
+
+                return function(e) {
+                    var contents = e.target.result;
+                    d3.selectAll("#lotext").remove();
+                    callback(contents, f);
+                             }; })(files[i].name)
 
             filelist.push(files[i].name);
             reader.readAsText(files[i]);
