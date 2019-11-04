@@ -2,6 +2,9 @@ import sys
 import mygene
 from os import path
 
+GENES = True
+TRANSCRIPTS = False
+
 prefix = input("Enter a weights (.wts) file prefix: ")
 wtsfile = prefix + ".som.wts"
 
@@ -11,7 +14,6 @@ nrow = int(nrow)
 ncol = int(ncol)
 
 def convert_symbols(prefix):
-    mg = mygene.MyGeneInfo()
     lrnfp = open(prefix+".lrn")
     for i in range(5):
         data = lrnfp.readline()
@@ -19,7 +21,12 @@ def convert_symbols(prefix):
     featids = [elem[:15] for elem in featids]
     lrnfp.close()
 
-    out = mg.querymany(featids, scopes='ensembl.gene', fields = 'symbol',species='human')
+    mg = mygene.MyGeneInfo()
+    if (GENES):
+        stag = 'ensembl.gene'
+    elif (TRANSCRIPTS):
+        stag = 'ensembl.transcript'
+    out = mg.querymany(featids, scopes=stag, fields = 'symbol',species='human')
     if len(out) == len(featids):
         outfile = open(prefix+".symbols",'w')
         for i in range(len(out)):
