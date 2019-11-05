@@ -5,7 +5,7 @@
 import sys
 
 if len(sys.argv) < 5:
-    sys.exit("python map_patient_cats.py <lrnfile> <bmufile> <category labels, e.g.:HC.V02,HC.V04,BL> <output file>")
+    sys.exit("python map_patient_cats.py <lrnfile> <bmufile> <category labels, e.g.:HC.V02,HC.V04,BL> <output bmu file>")
 
 # grab patient labels from lrnfile
 lrnfile = sys.argv[1]
