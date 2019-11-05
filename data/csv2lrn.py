@@ -2,6 +2,7 @@
 
 import pandas as pd
 import sys
+from sys import path
 
 infile = input("Enter a csv training matrix file: ")
 
@@ -19,6 +20,8 @@ samplestr = ' '.join(samplenames)
 #df = df.drop(['index'],axis=1)
 
 filename = infile[:-4]
+if path.exists(filename+".lrn"):
+	sys.command('rm '+filename+'.lrn')
 with open(filename+".lrn", 'a') as outfile:
 	outfile.write("#"+samplestr+"\n")
 	outfile.write("%"+str(nsamples)+"\n")
