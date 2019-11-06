@@ -8,7 +8,7 @@ GENES = True
 TRANSCRIPTS = False
 
 def convert_symbols(prefix):
-    sampleids, featids = somutils.parseLRNFile(prefix+".lrn")
+    sampleids, featids = somutils.parseLRNHeader(prefix+".lrn")
     featids = [elem[:15] for elem in featids]
 
     mg = mygene.MyGeneInfo()
@@ -36,8 +36,8 @@ def process_weightsfile(infile):
 # convert ensembl ids to symbols using mygene file
 # check if symbols file exists, if so read in symbols, otherwise query
     if not path.exists(prefix+".symbols"):
-        convert_symbols(prefix+".lrn")
-    symfp = open(prefix+".symbols")
+        convert_symbols(prefix)
+    symfp = open(outdir + prefix+".symbols")
     feat_names = symfp.readline()[:-1].split()
     symfp.close()
 
