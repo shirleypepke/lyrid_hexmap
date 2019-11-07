@@ -3,6 +3,7 @@ import mygene
 from os import path
 import numpy as np
 import somutils
+import argparse
 
 GENES = True
 TRANSCRIPTS = False
@@ -32,7 +33,7 @@ def convert_symbols(prefix):
     else:
         sys.exit("Too many gene symbols returned")
 
-def process_weightsfile(infile):
+def process_weightsfile(infile, prefix):
 # convert ensembl ids to symbols using mygene file
 # check if symbols file exists, if so read in symbols, otherwise query
     if not path.exists(prefix+".symbols"):
@@ -64,23 +65,6 @@ def process_weightsfile(infile):
                 outfile.write(str(ir)+","+str(ic)+","+components[fi][index]+"\n")
                 index += 1
         outfile.close()
-
-# Allow for separate input and output prefixes --> "Enter a som output prefix" -- empty will be interpreted as same
-prefix = input("Enter a .lrn file prefix: ")
-postfix = input("Enter a .wts file prefix (<return> for same): ")
-if len(postfix)==0:
-    postfix = prefix
-outdir = "./maps/"
-wtsfile = postfix + ".wts"
-
-if path.exists(wtsfile):
-    infile = open(wtsfile);
-    [nrow, ncol] = infile.readline()[1:-1].split()
-    nrow = int(nrow)
-    ncol = int(ncol)
-    process_weightsfile(infile)
-else:
-    print(wtsfile+" not found.")
 
 
 # process umx file
@@ -114,14 +98,6 @@ def process_umxfile(infile, umxfile):
     outfile.close()
 
 
-umxfile = postfix + ".umx"
-if path.exists(umxfile):
-    infile = open(umxfile)
-    process_umxfile(infile, umxfile)
-else:
-    print(umxfile+ " not found.")
-
-
 # process bmu file
 
 #%nrow ncol 
@@ -145,12 +121,54 @@ def process_bmfile(infile):
             outc.write(str(i)+","+str(j)+","+str((1.*mat[i][j]-mat.max())/(mat.max()-mat.min()))+"\n")
     outc.close()
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--errorsOnly", help="Only compute map errors, not components.", action = "store_true")
+parser.add_argument("-t", "--topo", default = "hexagonal-toroid", help="Specify map topology [rectangular, rectangular-toroid, hexagonal, hexagonal-toroid (default)]")
+parser.add_argument("--calculateErrors", help="Calculate quantization and topological errors (slow)", action="store_true")
+args = parser.parse_args()
+
+# Allow for separate input and output prefixes --> "Enter a som output prefix" -- empty will be interpreted as same
+prefix = input("Enter a .lrn file prefix: ")
+postfix = input("Enter a .wts file prefix (<return> for same): ")
+if len(postfix)==0:
+    postfix = prefix
+outdir = "./maps/"
+wtsfile = postfix + ".wts"
+
+lrnfile = prefix+".lrn"
+
+if args.calculateErrors or args.errorsOnly:
+    print("Calculating Errors...")
+    [qe,te]= somutils.calculateErrors(lrnfile, wtsfile, args.topo)
+    print("Quantization Error (per sample): "+str(qe)+"\nTopological Error (proportion): " + str(te))
+    if args.errorsOnly:
+        sys.exit()
+
+if path.exists(wtsfile):
+    infile = open(wtsfile);
+    [nrow, ncol] = infile.readline()[1:-1].split()
+    nrow = int(nrow)
+    ncol = int(ncol)
+    print("Processing components...")
+    process_weightsfile(infile, prefix)
+else:
+    print(wtsfile+" not found.")
+
+umxfile = postfix + ".umx"
+if path.exists(umxfile):
+    infile = open(umxfile)
+    process_umxfile(infile, umxfile)
+else:
+    print(umxfile+ " not found.")
+
 
 bmfile = postfix + ".bm"
 if path.exists(bmfile):
+    print("Processing density...")
     process_bmfile(bmfile)
 else:
     print(bmfile+" not found.")
+
 
 
 
