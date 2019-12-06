@@ -20,7 +20,6 @@ nvariables = len(df.columns) - 1
 
 samplenames = df['index'].tolist()
 samplestr = ' '.join(samplenames)
-#df = df.drop(['index'],axis=1)
 
 filename = infile[:-4]
 
@@ -45,8 +44,7 @@ else:
     if path.exists(filename+".lrn"):
         os.system('rm '+filename+'.lrn')
     varnames = ' '.join(df.columns)
-    mask = ["1" for x in range(nvariables+1)]
-    mask[0] = "9"
+    mask = ["1" for x in range(nvariables)]
     maskstr = ' '.join(mask)
     with open(filename+".lrn", 'a') as outfile:
         outfile.write("#"+samplestr+"\n")
@@ -54,6 +52,8 @@ else:
         outfile.write("%"+str(nvariables)+"\n")
         outfile.write("%"+maskstr+"\n")
         outfile.write("%"+varnames+"\n")
+        df = df.drop(['index'],axis=1)
+        # now need to output all columns but not first row
         df.to_csv(outfile, header=False, columns = df.columns[1:], sep=' ')
 
 
