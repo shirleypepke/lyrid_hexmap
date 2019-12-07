@@ -56,7 +56,7 @@ def process_weightsfile(infile, prefix):
     infile.close()
 
     for fi in range(nfeats):
-        print(feat_names[fi])
+        #print(feat_names[fi])
         outfile = open(outdir+feat_names[fi]+".csv",'w')
         outfile.write("nrow,ncol,intensity\n")
         index = 0
