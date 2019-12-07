@@ -43,6 +43,7 @@ if args.transpose:
 else:
     if path.exists(filename+".lrn"):
         os.system('rm '+filename+'.lrn')
+    df = df.drop(['index'],axis=1)
     varnames = ' '.join(df.columns)
     mask = ["1" for x in range(nvariables)]
     maskstr = ' '.join(mask)
@@ -52,7 +53,6 @@ else:
         outfile.write("%"+str(nvariables)+"\n")
         outfile.write("%"+maskstr+"\n")
         outfile.write("%"+varnames+"\n")
-        df = df.drop(['index'],axis=1)
         # now need to output all columns but not first row
         df.to_csv(outfile, header=False, columns = df.columns[1:], sep=' ')
 
