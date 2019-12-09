@@ -118,7 +118,7 @@ def process_bmfile(infile):
     outc.write("nrow,ncol,intensity\n")
     for i in range(nrow):
         for j in range(ncol):
-            outc.write(str(i)+","+str(j)+","+str((1.*mat[i][j]-mat.max())/(mat.max()-mat.min()))+"\n")
+            outc.write(str(i)+","+str(j)+","+str((1.*mat[i][j]-mat.min())/(mat.max()-mat.min()))+"\n")
     outc.close()
 
 parser = argparse.ArgumentParser()
