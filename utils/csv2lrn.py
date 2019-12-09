@@ -9,9 +9,15 @@ import argparse
 # parse option normal or transposed
 parser = argparse.ArgumentParser()
 parser.add_argument("--transpose", help="generate transposed data matrix for training", action="store_true")
+parser.add_argument("csvfile",help = "csv file name")
 args = parser.parse_args()
 
-infile = input("Enter a csv training matrix file: ")
+#infile = input("Enter a csv training matrix file: ")
+if args.csvfile:
+	infile = args.csvfile
+else:
+	parser.print_help()
+	sys.exit(0)
 
 df = pd.read_csv(infile)
 
