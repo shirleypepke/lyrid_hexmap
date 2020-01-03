@@ -33,7 +33,9 @@ if args.transpose:
     if path.exists(filename+".transpose.lrn"):
         os.system('rm '+filename+'.transpose.lrn')
     varnames = ' '.join(df.columns[1:])
-    mask = ["1" for x in range(nsamples)]
+    samplestr = "index "+samplestr
+    mask = ["1" for x in range(nsamples+1)]
+    mask[0] = "9"
     maskstr = ' '.join(mask)
     with open(filename+".transpose.lrn", 'a') as outfile:
         outfile.write("#"+varnames+"\n")
@@ -50,8 +52,9 @@ else:
     if path.exists(filename+".lrn"):
         os.system('rm '+filename+'.lrn')
     df = df.drop(['index'],axis=1)
-    varnames = ' '.join(df.columns)
-    mask = ["1" for x in range(nvariables)]
+    varnames = "index "+' '.join(df.columns)
+    mask = ["1" for x in range(nvariables+1)]
+    mask[0] = "9"
     maskstr = ' '.join(mask)
     with open(filename+".lrn", 'a') as outfile:
         outfile.write("#"+samplestr+"\n")
