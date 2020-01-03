@@ -40,7 +40,7 @@ if args.transpose:
     with open(filename+".transpose.lrn", 'a') as outfile:
         outfile.write("#"+varnames+"\n")
         outfile.write("%"+str(nvariables)+"\n")
-        outfile.write("%"+str(nsamples)+"\n")
+        outfile.write("%"+str(nsamples+1)+"\n")
         outfile.write("%"+maskstr+"\n")
         outfile.write("%"+samplestr+"\n")
         df = df.transpose()
@@ -59,7 +59,7 @@ else:
     with open(filename+".lrn", 'a') as outfile:
         outfile.write("#"+samplestr+"\n")
         outfile.write("%"+str(nsamples)+"\n")
-        outfile.write("%"+str(nvariables)+"\n")
+        outfile.write("%"+str(nvariables+1)+"\n")
         outfile.write("%"+maskstr+"\n")
         outfile.write("%"+varnames+"\n")
         # now need to output all columns but not first row
