@@ -125,17 +125,25 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--errorsOnly", help="Only compute map errors, not components.", action = "store_true")
 parser.add_argument("-t", "--topo", default = "hexagonal-toroid", help="Specify map topology [rectangular, rectangular-toroid, hexagonal, hexagonal-toroid (default)]")
 parser.add_argument("--calculateErrors", help="Calculate quantization and topological errors (slow)", action="store_true")
+parser.add_argument("--lrnfile")
+parser.add_argument("--wtsfile")
 args = parser.parse_args()
 
 # Allow for separate input and output prefixes --> "Enter a som output prefix" -- empty will be interpreted as same
-prefix = input("Enter a .lrn file prefix: ")
-postfix = input("Enter a .wts file prefix (<return> for same): ")
-if len(postfix)==0:
-    postfix = prefix
-outdir = "./maps/"
-wtsfile = postfix + ".wts"
+if len(args.lrnfile)==0 or len(args.wtsfile)==0:
+    prefix = input("Enter a .lrn file prefix: ")
+    postfix = input("Enter a .wts file prefix (<return> for same): ")
+    if len(postfix)==0:
+        postfix = prefix
+    wtsfile = postfix + ".wts"
+    lrnfile = prefix+".lrn"
+else:
+    wtsfile = args.wtsfile
+    lrnfile = args.lrnfile
+    prefix = lrnfile[:-4]
+    postfix = wtsfile[:-4]
 
-lrnfile = prefix+".lrn"
+outdir = "./maps/"
 
 if args.calculateErrors or args.errorsOnly:
     print("Calculating Errors...")
