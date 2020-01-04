@@ -63,7 +63,7 @@ else:
         outfile.write("%"+maskstr+"\n")
         outfile.write("%"+varnames+"\n")
         # now need to output all columns but not first row
-        df.to_csv(outfile, header=False, columns = df.columns[1:], sep=' ')
+        df.to_csv(outfile, header=False, columns = df.columns, sep=' ')
 
 
 
