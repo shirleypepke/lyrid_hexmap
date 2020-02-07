@@ -1,5 +1,6 @@
 import sys
 import argparse
+import pandas as pd
 
 parser = argparse.ArgumentParser()
 parser.add_argument("input_file", help = "File containing list of map files to average (one per line)")
@@ -16,4 +17,4 @@ for line in fptr:
 	ndf += 1
 	
 df = df / ndf
-df.to_csv(args.output_file,index_col=False)
+df.to_csv(args.output_file,index=False)
