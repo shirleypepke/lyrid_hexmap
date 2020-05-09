@@ -19,6 +19,7 @@ parser.add_argument("bmufile", help = "BMU file from SOMOCLU")
 parser.add_argument("lrnfile", help = "Lrn file for given bmufile")
 parser.add_argument("output_file")
 parser.add_argument("-query_stringdb", action="store_false")
+parser.add_argument("-string_output", default = 'stringdb.out', help="Filename for output of stringdb enrichments")
 parser.add_argument("-sdb_thresh", default = .01, help="optional enrichment threshold for stringdb")
 args = parser.parse_args()
 
@@ -26,6 +27,9 @@ sdb_thresh = .01
 if args.sdb_thresh:
 	sdb_thresh = args.sdb_thresh
 
+stringout = "stringdb.out"
+if args.string_output:
+	stringout = args.string_output
 
 import requests ## python -m pip install requests
 import json
@@ -69,6 +73,7 @@ def get_string_data(i,j,params,optr1):
 
 				## print significant GO Process annotations
 				print("\t".join([term, preferred_names, str(fdr), description]))
+				optr1.write(str(i)+","+str(j)+",")
 				optr1.write("\t".join([term, preferred_names, str(fdr), description]))
 				optr1.write("\n")
 
@@ -89,7 +94,7 @@ for itm in bmus:
 	index += 1
 
 optr = open(args.output_file,'w')
-optr1 = open("stringdb.out",'a')
+optr1 = open(stringout,'w')
 for i in range(nrows):
 	for j in range(ncols):
 		if len(map[i][j])>0 and args.query_stringdb == True:
