@@ -19,12 +19,13 @@ else:
 	parser.print_help()
 	sys.exit(0)
 
-df = pd.read_csv(infile)
+df = pd.read_csv(infile,index_col=0)
 
 nsamples = len(df.index)
-nvariables = len(df.columns) - 1
+#nvariables = len(df.columns) - 1
+nvariables = len(df.columns)
 
-samplenames = df['index'].tolist()
+samplenames = df.index.tolist()
 samplestr = ' '.join(samplenames)
 
 filename = infile[:-4]
@@ -45,13 +46,14 @@ if args.transpose:
         outfile.write("%"+samplestr+"\n")
         df = df.transpose()
         # now need to output all columns but not first row
-        df.drop('index', inplace=True)
+        #df.drop('index', inplace=True)
         df = df.reset_index(drop=True)
         df.to_csv(outfile, header=False, sep=' ')
 else:
     if path.exists(filename+".lrn"):
         os.system('rm '+filename+'.lrn')
-    df = df.drop(['index'],axis=1)
+    #df = df.drop(['index'],axis=1)
+    df = df.reset_index(drop=True)
     varnames = "index "+' '.join(df.columns)
     mask = ["1" for x in range(nvariables+1)]
     mask[0] = "9"
