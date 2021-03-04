@@ -23,7 +23,7 @@ def convert_symbols(prefix):
     out = mg.querymany(featids, scopes=stag, fields = 'symbol',species='human')
     if len(out) == len(featids):
         # outfile = open(outdir+prefix+".symbols",'w')
-        outfile = open(path.join(outdir, prefix+".symbols"),'w')
+        outfile = open(prefix+".symbols",'w')
         for i in range(len(out)):
             if 'symbol' in out[i]:
                 outfile.write(out[i]['symbol']+" ")
@@ -40,7 +40,7 @@ def process_weightsfile(infile, prefix):
     if not path.exists(prefix+".symbols"):
         convert_symbols(prefix)
     # symfp = open(outdir + prefix+".symbols")
-    symfp = open(path.join(outdir, prefix+".symbols"))
+    symfp = open(prefix+".symbols")
     feat_names = symfp.readline()[:-1].split()
     symfp.close()
 
@@ -60,7 +60,7 @@ def process_weightsfile(infile, prefix):
     for fi in range(nfeats):
         #print(feat_names[fi])
         # outfile = open(outdir+feat_names[fi]+".csv",'w')
-        outfile = open(path.join(outdir, feat_names[fi]+".csv"),'w')
+        outfile = open(path.join(outdir,feat_names[fi]+".csv"),'w')
         outfile.write("nrow,ncol,intensity\n")
         index = 0
         for ir in range(nrow):
@@ -73,7 +73,7 @@ def process_weightsfile(infile, prefix):
 # process umx file
 def process_umxfile(infile, umxfile):
     # outfile = open(outdir+umxfile+".csv",'w')
-    outfile = open(path.join(outdir, umxfile+".csv"),'w')
+    outfile = open(umxfile+".csv",'w')
     outfile.write("nrow,ncol,intensity\n")
 
     header = infile.readline()[:-1].split();
@@ -118,7 +118,7 @@ def process_bmfile(infile):
 
     #scale between zero and one
 
-    outc = open(outdir+"mapbm.csv",'w')
+    outc = open("mapbm.csv",'w')
     outc.write("nrow,ncol,intensity\n")
     for i in range(nrow):
         for j in range(ncol):
@@ -131,7 +131,7 @@ parser.add_argument("-t", "--topo", default = "hexagonal-toroid", help="Specify 
 parser.add_argument("--calculateErrors", help="Calculate quantization and topological errors (slow)", action="store_true")
 parser.add_argument("--lrnfile")
 parser.add_argument("--wtsfile")
-parser.add_argument("--outdir")
+# parser.add_argument("--outdir")
 args = parser.parse_args()
 
 # Allow for separate input and output prefixes --> "Enter a som output prefix" -- empty will be interpreted as same
@@ -148,7 +148,7 @@ else:
     prefix = lrnfile[:-4]
     postfix = wtsfile[:-4]
 
-outdir = args.outdir
+outdir = path.dirname(wtsfile)
 # outdir = "./maps/"
 
 if args.calculateErrors or args.errorsOnly:
