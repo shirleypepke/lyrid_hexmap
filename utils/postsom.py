@@ -60,7 +60,10 @@ def process_weightsfile(infile, prefix):
     for fi in range(nfeats):
         #print(feat_names[fi])
         # outfile = open(outdir+feat_names[fi]+".csv",'w')
-        outfile = open(path.join(outdir,feat_names[fi]+".csv"),'w')
+        import os
+        if not path.exists(path.join(outdir, 'maps')):
+            os.mkdir(path.join(outdir, 'maps'))
+        outfile = open(path.join(outdir,'maps',feat_names[fi]+".csv"),'w')
         outfile.write("nrow,ncol,intensity\n")
         index = 0
         for ir in range(nrow):
