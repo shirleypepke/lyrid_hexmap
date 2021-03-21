@@ -15,6 +15,18 @@ def parseBMFile(bmfile):
         bmus[int(data[0])] = [int(data[1]),int(data[2])]
     bmfp.close()
     return nrow, ncol, bmus
+    
+def mapBMUs(bmfile):
+	bmfp = open(bmfile)
+	nrow, ncol = bmfp.readline()[1:-1].split()
+	nrow = int(nrow)
+	ncol = int(ncol)
+	nsamples = int(bmfp.readline()[1:-1])
+	bmuMap = [[[] for x in range(ncol)] for y in range(nrow)]
+	for line in bmfp:
+		data = line[:-1].split()
+		bmuMap[int(data[1]),int(data[2])].append(int(data[0]))
+	return nrow, ncol, bmuMap
 
 def parseLRNHeader(lrnfile):
     lrnfp = open(lrnfile)
